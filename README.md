@@ -37,3 +37,13 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 ```ts
 <div />
 ```
+
+5. tailwindcss using "order-x" to change the order of sibling element
+
+```ts
+<div className="flex flex-col lg:flex-row">
+  <div className="order-1">1</div>
+  <div className="order-0 lg:order-2">2</div>
+</div>
+```
+

@@ -6,7 +6,7 @@ interface PhoneProps extends HTMLAttributes<HTMLDivElement> {
   dark?: boolean
 }
 
-const Phone = ({ imgSrc, className, dark = false, ...props }: PhoneProps) => {
+export const Phone = ({ imgSrc, className, dark = false, ...props }: PhoneProps) => {
   return (
     <div
       className={cn(
@@ -34,5 +34,3 @@ const Phone = ({ imgSrc, className, dark = false, ...props }: PhoneProps) => {
     </div>
   )
 }
-
-export default Phone
