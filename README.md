@@ -3,7 +3,12 @@
 3. other dependencies
 
 ```sh
-
+npm i
+framer-motion
+lucide-react
+react-dropzone
+uploadthing @uploadthing/react
+zod
 ```
 
 ## New things learned:
@@ -47,3 +52,54 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 </div>
 ```
 
+6. useRef (still not clear, need to learn more)
+
+7. framer-motion
+
+```ts
+import { HTMLAttributes, useEffect, useRef, useState } from "react";
+import { useInView } from "framer-motion";
+
+const MyComponent = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.4 });
+  // ...
+};
+```
+
+the containerRef is used to reference the element
+the `once` prop is used to trigger the animation only once and `amount` is used to trigger the animation when the element is 40% in view
+
+8. setting dynamic css
+
+```ts
+<div
+  className='animate-marquee'
+  style={{ '--marquee-duration': duration } as React.CSSProperties}>
+  //...
+
+</div>
+```
+
+tailwind.config.ts
+
+```ts
+//...
+theme: {
+  extend: {
+    //...
+    keyframes: {
+      marquee: {
+        "100%": {
+          transform: "translateY(-50%)",
+        },
+      },
+    },
+    animation: {
+      marquee: 'marquee var(--marquee-duration) linear infinite',
+    },
+  },
+},
+```
+
+9. use cloudflare R2 (similar to AWS S3) for unstructured data like images, videos, etc.
