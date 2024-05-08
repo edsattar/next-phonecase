@@ -131,13 +131,14 @@ export const DesignConfigurator = ({
         renderedDimension.width,
         renderedDimension.height,
       );
+       console.log("canvas11", canvas);
 
-      // const base64 = canvas.toDataURL();
-      // const base64Data = base64.split(",")[1];
-      //
-      // const blob = base64ToBlob(base64Data, "image/png");
-      // const file = new File([blob], `${configId}.png`, { type: "image/png" });
-      //
+      const base64 = canvas.toDataURL();
+      const base64Data = base64.split(",")[1];
+
+      const blob = base64ToBlob(base64Data, "image/png");
+      const file = new File([blob], `${configId}.png`, { type: "image/png" });
+
       // await startUpload([file], { configId });
     } catch (err) {
       toast({
