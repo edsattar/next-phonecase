@@ -60,11 +60,7 @@ export const DesignConfigurator = ({
       await Promise.all([saveConfiguration(), _saveConfig(args)]);
       router.push(`/configure/preview?id=${configId}`);
     },
-    onError: (e, v, c) => {
-      console.error("Error", e);
-      console.error("Variable", v);
-      console.error("Context", c);
-
+    onError: () => {
       toast({
         title: "Something went wrong",
         description: "There was an error on our end. Please try again.",
@@ -127,6 +123,7 @@ export const DesignConfigurator = ({
       userImage.crossOrigin = "anonymous";
       userImage.src = imageUrl;
       await new Promise((resolve) => (userImage.onload = resolve));
+
       ctx?.drawImage(
         userImage,
         actualX,
@@ -143,7 +140,6 @@ export const DesignConfigurator = ({
 
       await startUpload([file], { configId });
     } catch (err) {
-      console.error(err);
       toast({
         title: "Something went wrong",
         description:
@@ -157,16 +153,6 @@ export const DesignConfigurator = ({
     const byteArray = Uint8Array.from(Buffer.from(base64, "base64"));
     return new Blob([byteArray], { type: mimeType });
   }
-
-  // function base64ToBlob(base64: string, mimeType: string) {
-  //   const byteCharacters = atob(base64)
-  //   const byteNumbers = new Array(byteCharacters.length)
-  //   for (let i = 0; i < byteCharacters.length; i++) {
-  //     byteNumbers[i] = byteCharacters.charCodeAt(i)
-  //   }
-  //   const byteArray = new Uint8Array(byteNumbers)
-  //   return new Blob([byteArray], { type: mimeType })
-  // }
 
   return (
     <div className="relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20">
@@ -388,7 +374,7 @@ export const DesignConfigurator = ({
               <p className="font-medium whitespace-nowrap">
                 {formatPrice(
                   (BASE_PRICE + options.finish.price + options.material.price) /
-                  100,
+                    100,
                 )}
               </p>
               <Button

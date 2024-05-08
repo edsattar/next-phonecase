@@ -26,7 +26,6 @@ const Page = async ({ searchParams }: PageProps) => {
   }
 
   return <DesignPreview configuration={configuration} />
-  // return <p>{id}</p>;
 };
 
 export default Page;
