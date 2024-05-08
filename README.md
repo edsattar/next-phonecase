@@ -104,7 +104,7 @@ theme: {
 
 9. use cloudflare R2 (similar to AWS S3) for unstructured data like images, videos, etc.
 
-10. use react query for caching server actions
+10. use react query "useMutation" for caching server actions
 
 ```ts
 import { useMutation } from "@tanstack/react-query";
@@ -132,3 +132,7 @@ function saveConfiguration() {
 }
 
 ```
+
+11. use react-dropzone for file upload
+
+12. use react query "useQuery"

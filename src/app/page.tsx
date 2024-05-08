@@ -18,7 +18,7 @@ export default function Home() {
             <div className="relative mx-auto text-center lg:text-left flex flex-col items-center lg:items-start">
               <div className="absolute w-28 left-0 -top-20 hidden lg:block">
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t via-slate-50/50 from-slate-50 h-28" />
-                <img src="/snake-1.png" className="w-full" />
+                <img src="/snake-1.png" className="w-full" alt="logo" />
               </div>
               <h1 className="relative w-fit tracking-tight text-balance mt-16 font-bold !leading-tight text-gray-900 text-5xl md:text-6xl lg:text-7xl">
                 Your Image on a{" "}
@@ -59,10 +59,12 @@ export default function Home() {
               <img
                 src="/your-image.png"
                 className="absolute w-40 lg:w-52 left-56 -top-20 select-none hidden sm:block lg:hidden xl:block"
+                alt="your-image-arrow"
               />
               <img
                 src="/line.png"
                 className="absolute w-20 -left-6 -bottom-6 select-none"
+                alt="line"
               />
               <Phone className="w-64" imgSrc="/testimonials/1.jpg" />
             </div>
@@ -81,7 +83,7 @@ export default function Home() {
               </span>{" "}
               say
             </h2>
-            <img src="/snake-2.png" className="w-24 order-0 lg:order-2" />
+            <img src="/snake-2.png" className="w-24 order-0 lg:order-2" alt="mascot-clipart-2" />
           </div>
           <div className="mx-auto grid max-w-2xl grid-cols-1 px-4 lg:mx-0 lg:max-w-none lg:grid-cols-2 gap-y-16">
             {/* 1st user review */}
@@ -179,12 +181,14 @@ export default function Home() {
               <img
                 src="/arrow.png"
                 className="absolute top-[25rem] md:top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 rotate-90 md:rotate-0"
+                alt="arrow"
               />
 
               <div className="relative h-80 md:h-full w-full md:justify-self-end max-w-sm rounded-xl bg-gray-900/5 ring-inset ring-gray-900/10 lg:rounded-2xl">
                 <img
                   src="/horse.jpg"
                   className="rounded-md object-cover bg-white shadow-2xl ring-1 ring-gray-900/10 h-full w-full"
+                  alt="photo-horse"
                 />
               </div>
 
