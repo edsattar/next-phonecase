@@ -122,16 +122,17 @@ export const DesignConfigurator = ({
       const userImage = new Image();
       userImage.crossOrigin = "anonymous";
       userImage.src = imageUrl;
-      await new Promise((resolve) => (userImage.onload = resolve));
+      await new Promise((resolve) => (userImage.onload = resolve)).then(() => {
+        console.log("image loaded");
 
-      ctx?.drawImage(
-        userImage,
-        actualX,
-        actualY,
-        renderedDimension.width,
-        renderedDimension.height,
-      );
-       console.log("canvas11", canvas);
+        ctx?.drawImage(
+          userImage,
+          actualX,
+          actualY,
+          renderedDimension.width,
+          renderedDimension.height,
+        );
+      });
 
       const base64 = canvas.toDataURL();
       const base64Data = base64.split(",")[1];
@@ -139,7 +140,7 @@ export const DesignConfigurator = ({
       const blob = base64ToBlob(base64Data, "image/png");
       const file = new File([blob], `${configId}.png`, { type: "image/png" });
 
-      // await startUpload([file], { configId });
+      await startUpload([file], { configId });
     } catch (err) {
       toast({
         title: "Something went wrong",
@@ -163,7 +164,7 @@ export const DesignConfigurator = ({
   //   }
   //   const byteArray = new Uint8Array(byteNumbers)
   //   return new Blob([byteArray], { type: mimeType })
-  // }  
+  // }
 
   return (
     <div className="relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20">
@@ -385,7 +386,7 @@ export const DesignConfigurator = ({
               <p className="font-medium whitespace-nowrap">
                 {formatPrice(
                   (BASE_PRICE + options.finish.price + options.material.price) /
-                    100,
+                  100,
                 )}
               </p>
               <Button
