@@ -14,41 +14,37 @@ export const ourFileRouter = {
       return { input };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      try {
-        const { configId } = metadata.input;
+      const { configId } = metadata.input;
 
-        const res = await fetch(file.url);
-        const buffer = await res.arrayBuffer();
+      const res = await fetch(file.url);
+      const buffer = await res.arrayBuffer();
 
-        const imgMetadata = await sharp(buffer).metadata();
-        const { width, height } = imgMetadata;
+      const imgMetadata = await sharp(buffer).metadata();
+      const { width, height } = imgMetadata;
 
-        if (!configId) {
-          const [configuration] = await db
-            .insert(configurations)
-            .values({
-              imageUrl: file.url,
-              height: height || 500,
-              width: width || 500,
-            })
-            .returning();
+      if (!configId) {
+        const [configuration] = await db
+          .insert(configurations)
+          .values({
+            imageUrl: file.url,
+            height: height || 500,
+            width: width || 500,
+          })
+          .returning();
 
-          return { configId: configuration.id };
-        } else {
-          const [updatedConfiguration] = await db
-            .update(configurations)
-            .set({
-              croppedImageUrl: file.url,
-            })
-            .where(eq(configurations.id, configId))
-            .returning();
+        return { configId: configuration.id };
+      } else {
+        const [updatedConfiguration] = await db
+          .update(configurations)
+          .set({
+            croppedImageUrl: file.url,
+          })
+          .where(eq(configurations.id, configId))
+          .returning();
 
-          return { configId: updatedConfiguration.id };
-        }
-      } catch (error) {
-        console.error("onUploadComplete", error);
+        return { configId: updatedConfiguration.id };
       }
-    }),
+    })
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
