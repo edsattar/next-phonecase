@@ -10,12 +10,12 @@ export type SaveConfigArgs = {
 };
 
 export async function saveConfig({ values, configId }: SaveConfigArgs) {
-  // await db.configuration.update({
-  //   where: { id: configId },
-  //   data: { color, finish, material, model },
-  // });
-  await db
-    .update(configurations)
-    .set(values)
-    .where(eq(configurations.id, configId));
+  try {
+    await db
+      .update(configurations)
+      .set(values)
+      .where(eq(configurations.id, configId));
+  } catch (error) {
+    console.error(error);
+  }
 }

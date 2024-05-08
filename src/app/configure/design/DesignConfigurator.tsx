@@ -60,7 +60,11 @@ export const DesignConfigurator = ({
       await Promise.all([saveConfiguration(), _saveConfig(args)]);
       router.push(`/configure/preview?id=${configId}`);
     },
-    onError: () => {
+    onError: (e, v, c) => {
+      console.error("Error", e);
+      console.error("Variable", v);
+      console.error("Context", c);
+
       toast({
         title: "Something went wrong",
         description: "There was an error on our end. Please try again.",
@@ -122,17 +126,14 @@ export const DesignConfigurator = ({
       const userImage = new Image();
       userImage.crossOrigin = "anonymous";
       userImage.src = imageUrl;
-      await new Promise((resolve) => (userImage.onload = resolve)).then(() => {
-        console.log("image loaded");
-
-        ctx?.drawImage(
-          userImage,
-          actualX,
-          actualY,
-          renderedDimension.width,
-          renderedDimension.height,
-        );
-      });
+      await new Promise((resolve) => (userImage.onload = resolve));
+      ctx?.drawImage(
+        userImage,
+        actualX,
+        actualY,
+        renderedDimension.width,
+        renderedDimension.height,
+      );
 
       const base64 = canvas.toDataURL();
       const base64Data = base64.split(",")[1];
@@ -142,6 +143,7 @@ export const DesignConfigurator = ({
 
       await startUpload([file], { configId });
     } catch (err) {
+      console.error(err);
       toast({
         title: "Something went wrong",
         description:
