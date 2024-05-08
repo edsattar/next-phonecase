@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import HandleComponent from "@/components/HandleComponent";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -31,8 +32,8 @@ import { ArrowRight, Check, ChevronsUpDown } from "lucide-react";
 import { BASE_PRICE } from "@/config/products";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useToast } from "@/components/ui/use-toast";
-import { useMutation } from '@tanstack/react-query'
-import { saveConfig as _saveConfig, SaveConfigArgs } from './actions'
+import { useMutation } from "@tanstack/react-query";
+import { saveConfig as _saveConfig, SaveConfigArgs } from "./actions";
 import { useRouter } from "next/navigation";
 
 interface Props {
@@ -46,25 +47,27 @@ export const DesignConfigurator = ({
   imageUrl,
   imageDimensions,
 }: Props) => {
-  const { toast } = useToast()
-  const router = useRouter()
+  const { toast } = useToast();
+  const router = useRouter();
 
-  // const { mutate: saveConfig, isPending } = useMutation({
-  //   mutationKey: ['save-config'],
-  //   mutationFn: async (args: SaveConfigArgs) => {
-  //     await Promise.all([saveConfiguration(), _saveConfig(args)])
-  //   },
-  //   onError: () => {
-  //     toast({
-  //       title: 'Something went wrong',
-  //       description: 'There was an error on our end. Please try again.',
-  //       variant: 'destructive',
-  //     })
-  //   },
-  //   onSuccess: () => {
-  //     router.push(`/configure/preview?id=${configId}`)
-  //   },
-  // })
+  const {
+    mutate: saveConfig,
+    isPending,
+    isSuccess,
+  } = useMutation({
+    mutationKey: ["save-config"],
+    mutationFn: async (args: SaveConfigArgs) => {
+      await Promise.all([saveConfiguration(), _saveConfig(args)]);
+      router.push(`/configure/preview?id=${configId}`);
+    },
+    onError: () => {
+      toast({
+        title: "Something went wrong",
+        description: "There was an error on our end. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
 
   const [options, setOptions] = useState<{
     color: (typeof COLORS)[number];
@@ -88,10 +91,10 @@ export const DesignConfigurator = ({
     y: 205,
   });
 
-  const phoneCaseRef = useRef<HTMLDivElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const phoneCaseRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const { startUpload } = useUploadThing('imageUploader')
+  const { startUpload } = useUploadThing("imageUploader");
 
   async function saveConfiguration() {
     try {
@@ -100,55 +103,55 @@ export const DesignConfigurator = ({
         top: caseTop,
         width,
         height,
-      } = phoneCaseRef.current!.getBoundingClientRect()
+      } = phoneCaseRef.current!.getBoundingClientRect();
 
       const { left: containerLeft, top: containerTop } =
-        containerRef.current!.getBoundingClientRect()
+        containerRef.current!.getBoundingClientRect();
 
-      const leftOffset = caseLeft - containerLeft
-      const topOffset = caseTop - containerTop
+      const leftOffset = caseLeft - containerLeft;
+      const topOffset = caseTop - containerTop;
 
-      const actualX = renderedPosition.x - leftOffset
-      const actualY = renderedPosition.y - topOffset
+      const actualX = renderedPosition.x - leftOffset;
+      const actualY = renderedPosition.y - topOffset;
 
-      const canvas = document.createElement('canvas')
-      canvas.width = width
-      canvas.height = height
-      const ctx = canvas.getContext('2d')
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
 
-      const userImage = new Image()
-      userImage.crossOrigin = 'anonymous'
-      userImage.src = imageUrl
-      await new Promise((resolve) => (userImage.onload = resolve))
+      const userImage = new Image();
+      userImage.crossOrigin = "anonymous";
+      userImage.src = imageUrl;
+      await new Promise((resolve) => (userImage.onload = resolve));
 
       ctx?.drawImage(
         userImage,
         actualX,
         actualY,
         renderedDimension.width,
-        renderedDimension.height
-      )
+        renderedDimension.height,
+      );
 
-      const base64 = canvas.toDataURL()
-      const base64Data = base64.split(',')[1]
+      const base64 = canvas.toDataURL();
+      const base64Data = base64.split(",")[1];
 
-      const blob = base64ToBlob(base64Data, 'image/png')
-      const file = new File([blob], `${configId}.png`, { type: 'image/png' })
+      const blob = base64ToBlob(base64Data, "image/png");
+      const file = new File([blob], `${configId}.png`, { type: "image/png" });
 
-      await startUpload([file], { configId })
+      await startUpload([file], { configId });
     } catch (err) {
       toast({
-        title: 'Something went wrong',
+        title: "Something went wrong",
         description:
-          'There was a problem saving your config, please try again.',
-        variant: 'destructive',
-      })
+          "There was a problem saving your config, please try again.",
+        variant: "destructive",
+      });
     }
   }
 
   function base64ToBlob(base64: string, mimeType: string) {
-    const byteArray = Uint8Array.from(Buffer.from(base64, 'base64'));
-    return new Blob([byteArray], { type: mimeType })
+    const byteArray = Uint8Array.from(Buffer.from(base64, "base64"));
+    return new Blob([byteArray], { type: mimeType });
   }
 
   return (
@@ -371,28 +374,41 @@ export const DesignConfigurator = ({
               <p className="font-medium whitespace-nowrap">
                 {formatPrice(
                   (BASE_PRICE + options.finish.price + options.material.price) /
-                  100,
+                    100,
                 )}
               </p>
               <Button
-                // isLoading={isPending}
-                // disabled={isPending}
-                // loadingText="Saving"
-                onClick={() =>
-                  saveConfiguration()
-                  // saveConfig({
-                  //   configId,
-                  //   color: options.color.value,
-                  //   finish: options.finish.value,
-                  //   material: options.material.value,
-                  //   model: options.model.value,
-                  // })
-                }
+                disabled={isPending || isSuccess}
+                onClick={() => {
+                  saveConfig({
+                    values: {
+                      color: options.color.value,
+                      finish: options.finish.value,
+                      material: options.material.value,
+                      model: options.model.value,
+                    },
+                    configId,
+                  });
+                }}
                 size="sm"
                 className="w-full"
               >
-                Continue
-                <ArrowRight className="h-4 w-4 ml-1.5 inline" />
+                {isPending ? (
+                  <>
+                    <ReloadIcon className="h-4 w-4 animate-spin mr-2" />
+                    Saving
+                  </>
+                ) : isSuccess ? (
+                  <>
+                    Saved
+                    <Check className="h-4 w-4 ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Continue
+                    <ArrowRight className="h-4 w-4 ml-1.5 inline" />
+                  </>
+                )}
               </Button>
             </div>
           </div>

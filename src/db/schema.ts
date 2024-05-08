@@ -1,4 +1,4 @@
-import { text, integer, sqliteTable } from "drizzle-orm/sqlite-core";
+import { text, integer, sqliteTable, real } from "drizzle-orm/sqlite-core";
 import { createId } from "@paralleldrive/cuid2";
 
 export const phoneModelEnum = [
@@ -16,7 +16,11 @@ export const caseFinishEnum = ["smooth", "textured"] as const;
 
 export const caseColorEnum = ["black", "blue", "rose"] as const;
 
-export const orderStatusEnum = ["fulfilled", "shipped", "awaiting_shipment"] as const;
+export const orderStatusEnum = [
+  "fulfilled",
+  "shipped",
+  "awaiting_shipment",
+] as const;
 
 export const configurations = sqliteTable("configurations", {
   id: text("id")
@@ -32,4 +36,66 @@ export const configurations = sqliteTable("configurations", {
   finish: text("finish", { enum: caseFinishEnum }),
 });
 
-export type Configurations = typeof configurations.$inferSelect;
+export type Configuration = typeof configurations.$inferSelect;
+export type ConfigurationsUpdate = typeof configurations.$inferInsert;
+
+export const users = sqliteTable("users", {
+  id: text("id")
+    .$default(() => createId())
+    .primaryKey(),
+  createdAt: text("created_at").$default(() => new Date().toISOString()),
+  updatedAt: text("updated_at").$default(() => new Date().toISOString()),
+  email: text("email").notNull(),
+});
+
+export const orders = sqliteTable("orders", {
+  id: text("id")
+    .$default(() => createId())
+    .primaryKey(),
+  createdAt: text("created_at").$default(() => new Date().toISOString()),
+  updatedAt: text("updated_at").$default(() => new Date().toISOString()),
+  userId: text("user_id")
+    .references(() => users.id)
+    .notNull(),
+  configurationId: text("configuration_id")
+    .references(() => configurations.id)
+    .notNull(),
+  shippingAddressId: text("shipping_address_id")
+    .references(() => shippingAddresses.id),
+  billingAddressId: text("billing_address_id")
+    .references(() => billingAddresses.id),
+  amount: real("amount").notNull(),
+  isPaid: integer("is_paid", { mode: "boolean" }).default(false),
+  status: text("status", { enum: orderStatusEnum }).default(
+    "awaiting_shipment",
+  ),
+});
+
+export type Order = typeof orders.$inferSelect;
+export type OrdersInsert = typeof orders.$inferInsert;
+
+export const shippingAddresses = sqliteTable("shipping_addresses", {
+  id: text("id")
+    .$default(() => createId())
+    .primaryKey(),
+  name: text("name").notNull(),
+  country: text("country").notNull(),
+  state: text("state"),
+  city: text("city").notNull(),
+  postalCode: text("postal_code").notNull(),
+  street: text("street").notNull(),
+  phone: text("phone"),
+});
+
+export const billingAddresses = sqliteTable("billing_addresses", {
+  id: text("id")
+    .$default(() => createId())
+    .primaryKey(),
+  name: text("name").notNull(),
+  country: text("country").notNull(),
+  state: text("state"),
+  city: text("city").notNull(),
+  postalCode: text("postal_code").notNull(),
+  street: text("street").notNull(),
+  phone: text("phone"),
+});

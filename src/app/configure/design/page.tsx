@@ -1,8 +1,6 @@
 import { db } from '@/db'
 import { notFound } from 'next/navigation'
 import { DesignConfigurator } from './DesignConfigurator'
-import { eq } from 'drizzle-orm'
-import { configurations } from '@/db/schema'
 
 interface PageProps {
   searchParams: {
@@ -18,7 +16,7 @@ const Page = async ({ searchParams }: PageProps) => {
   }
 
   const configuration = await db.query.configurations.findFirst({
-    where: eq(configurations.id, id),
+    where: (configurations, { eq }) => eq(configurations.id, id),
   })
 
   if (!configuration) {

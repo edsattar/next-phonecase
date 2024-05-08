@@ -103,3 +103,32 @@ theme: {
 ```
 
 9. use cloudflare R2 (similar to AWS S3) for unstructured data like images, videos, etc.
+
+10. use react query for caching server actions
+
+```ts
+import { useMutation } from "@tanstack/react-query";
+import { saveConfig as _saveConfig, SaveConfigArgs } from "./actions";
+
+const { mutate: saveConfig, isPending } = useMutation({
+  mutationKey: ["save-config"],
+  mutationFn: async (args: SaveConfigArgs) => {
+    await Promise.all([saveConfiguration(), _saveConfig(args)]);
+  },
+  onError: () => {
+    toast({
+      title: "Something went wrong",
+      description: "There was an error on our end. Please try again.",
+      variant: "destructive",
+    });
+  },
+  onSuccess: () => {
+    router.push(`/configure/preview?id=${configId}`);
+  },
+});
+
+function saveConfiguration() {
+  //...
+}
+
+```

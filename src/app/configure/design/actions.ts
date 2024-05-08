@@ -1,25 +1,21 @@
-'use server'
+"use server";
 
-import { db } from '@/db'
-import { CaseColor, CaseFinish, CaseMaterial, PhoneModel } from '@prisma/client'
+import { db } from "@/db";
+import { Configuration, configurations } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 export type SaveConfigArgs = {
-  color: CaseColor
-  finish: CaseFinish
-  material: CaseMaterial
-  model: PhoneModel
-  configId: string
-}
+  values: Pick<Configuration, "color" | "model" | "material" | "finish">;
+  configId: string;
+};
 
-export async function saveConfig({
-  color,
-  finish,
-  material,
-  model,
-  configId,
-}: SaveConfigArgs) {
-  await db.configuration.update({
-    where: { id: configId },
-    data: { color, finish, material, model },
-  })
+export async function saveConfig({ values, configId }: SaveConfigArgs) {
+  // await db.configuration.update({
+  //   where: { id: configId },
+  //   data: { color, finish, material, model },
+  // });
+  await db
+    .update(configurations)
+    .set(values)
+    .where(eq(configurations.id, configId));
 }
