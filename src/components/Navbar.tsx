@@ -29,7 +29,7 @@ export const Navbar = async () => {
                 </Link>
                 {isAdmin ? (
                   <Link
-                    href="/dashboard"
+                    href="#"
                     className={buttonVariants({ size: "sm", variant: "ghost" })}
                   >
                     Dashboard ✨

@@ -390,15 +390,16 @@ export const DesignConfigurator = ({
               <Button
                 disabled={isPending || isSuccess}
                 onClick={() => {
-                  saveConfig({
-                    values: {
-                      color: options.color.value,
-                      finish: options.finish.value,
-                      material: options.material.value,
-                      model: options.model.value,
-                    },
-                    configId,
-                  });
+                  console.debug("393:save config");
+                  // saveConfig({
+                  //   values: {
+                  //     color: options.color.value,
+                  //     finish: options.finish.value,
+                  //     material: options.material.value,
+                  //     model: options.model.value,
+                  //   },
+                  //   configId,
+                  // });
                 }}
                 size="sm"
                 className="w-full"
