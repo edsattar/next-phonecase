@@ -135,10 +135,10 @@ export const DesignConfigurator = ({
       const base64 = canvas.toDataURL();
       const base64Data = base64.split(",")[1];
 
-      const blob = base64ToBlob(base64Data, "image/png");
-      const file = new File([blob], `${configId}.png`, { type: "image/png" });
-
-      await startUpload([file], { configId });
+      // const blob = base64ToBlob(base64Data, "image/png");
+      // const file = new File([blob], `${configId}.png`, { type: "image/png" });
+      //
+      // await startUpload([file], { configId });
     } catch (err) {
       toast({
         title: "Something went wrong",
@@ -154,15 +154,15 @@ export const DesignConfigurator = ({
   //   return new Blob([byteArray], { type: mimeType });
   // }
 
-  function base64ToBlob(base64: string, mimeType: string) {
-    const byteCharacters = atob(base64)
-    const byteNumbers = new Array(byteCharacters.length)
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i)
-    }
-    const byteArray = new Uint8Array(byteNumbers)
-    return new Blob([byteArray], { type: mimeType })
-  }  
+  // function base64ToBlob(base64: string, mimeType: string) {
+  //   const byteCharacters = atob(base64)
+  //   const byteNumbers = new Array(byteCharacters.length)
+  //   for (let i = 0; i < byteCharacters.length; i++) {
+  //     byteNumbers[i] = byteCharacters.charCodeAt(i)
+  //   }
+  //   const byteArray = new Uint8Array(byteNumbers)
+  //   return new Blob([byteArray], { type: mimeType })
+  // }  
 
   return (
     <div className="relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20">
