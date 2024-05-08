@@ -1,0 +1,1 @@
+ALTER TABLE configurations ADD `image_url` text NOT NULL;
