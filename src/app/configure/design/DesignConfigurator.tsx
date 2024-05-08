@@ -149,10 +149,20 @@ export const DesignConfigurator = ({
     }
   }
 
+  // function base64ToBlob(base64: string, mimeType: string) {
+  //   const byteArray = Uint8Array.from(Buffer.from(base64, "base64"));
+  //   return new Blob([byteArray], { type: mimeType });
+  // }
+
   function base64ToBlob(base64: string, mimeType: string) {
-    const byteArray = Uint8Array.from(Buffer.from(base64, "base64"));
-    return new Blob([byteArray], { type: mimeType });
-  }
+    const byteCharacters = atob(base64)
+    const byteNumbers = new Array(byteCharacters.length)
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i)
+    }
+    const byteArray = new Uint8Array(byteNumbers)
+    return new Blob([byteArray], { type: mimeType })
+  }  
 
   return (
     <div className="relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20">
