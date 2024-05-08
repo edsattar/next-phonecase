@@ -32,7 +32,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
 
   // const { label: modelLabel } = MODELS.options.find( ({ value }) => value === model,)!;
 
-  // const modelLabel = MODELS.options.find( (option) => option.value === model)?.label;
+  const modelLabel = MODELS.options.find( (option) => option.value === model)?.label;
 
 
 
@@ -92,7 +92,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
 
         <div className="mt-6 sm:col-span-9 md:row-end-1">
           <h3 className="text-3xl font-bold tracking-tight text-gray-900">
-            {/* Your {modelLabel} Case */}
+            Your {modelLabel} Case
           </h3>
           <div className="mt-3 flex items-center gap-1.5 text-base">
             <Check className="h-4 w-4 text-green-500" />
