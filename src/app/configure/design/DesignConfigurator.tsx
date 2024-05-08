@@ -164,16 +164,16 @@ export const DesignConfigurator = ({
           <AspectRatio
             ref={phoneCaseRef}
             ratio={896 / 1831}
-            className="pointer-events-none relative z-50 aspect-[896/1831] w-full"
+            className="pointer-events-none relative aspect-[896/1831] w-full"
           >
             <NextImage
               fill
               alt="phone image"
               src="/phone-template.png"
-              className="pointer-events-none z-50 select-none"
+              className="pointer-events-none z-10 select-none"
             />
           </AspectRatio>
-          <div className="absolute z-40 inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] shadow-[0_0_0_99999px_rgba(229,231,235,0.6)]" />
+          <div className="absolute inset-0 left-[3px] top-px right-[3px] z-10 bottom-px rounded-[32px] shadow-[0_0_0_99999px_rgba(229,231,235,0.6)]" />
           <div
             className={cn(
               "absolute inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px]",
@@ -199,7 +199,7 @@ export const DesignConfigurator = ({
           onDragStop={(_, { x, y }) => {
             setRenderedPosition({ x, y });
           }}
-          className="absolute z-20 border-[3px] border-primary"
+          className="absolute border-[3px] border-primary"
           lockAspectRatio
           resizeHandleComponent={{
             bottomRight: <HandleComponent />,
@@ -222,7 +222,7 @@ export const DesignConfigurator = ({
         <ScrollArea className="relative flex-1 overflow-auto">
           <div
             aria-hidden="true"
-            className="absolute z-10 inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white pointer-events-none"
+            className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white pointer-events-none"
           />
           <div className="px-8 pb-12 pt-8">
             <h2 className="tracking-tight font-bold text-3xl">
@@ -247,7 +247,7 @@ export const DesignConfigurator = ({
                         key={color.label}
                         value={color}
                         className={cn(
-                          "relative flex cursor-pointer items-center z-50 rounded-full border-2 border-transparent rotate-45",
+                          "relative flex cursor-pointer items-center rounded-full border-2 border-transparent rotate-45",
                           `aria-checked:ring-[2px] ring-${color.tw}`,
                         )}
                       >
