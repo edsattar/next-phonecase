@@ -5,7 +5,7 @@
 // bg-rose-950
 // ring-rose-950
 
-import { PRODUCT_PRICES } from '@/config/products'
+import { PRODUCT_PRICES } from "@/config/products";
 
 export const COLORS = [
   { label: "Black", value: "black", tw: "zinc-900" },
@@ -16,6 +16,14 @@ export const COLORS = [
   },
   { label: "Rose", value: "rose", tw: "rose-950" },
 ] as const;
+export const MODELS2 = {
+  iphonex: { label: "iPhone X" },
+  iphone11: { label: "iPhone 11" },
+  iphone12: { label: "iPhone 12" },
+  iphone13: { label: "iPhone 13" },
+  iphone14: { label: "iPhone 14" },
+  iphone15: { label: "iPhone 15" },
+} as const;
 
 export const MODELS = {
   name: "models",
@@ -48,37 +56,37 @@ export const MODELS = {
 } as const;
 
 export const MATERIALS = {
-  name: 'material',
+  name: "material",
   options: [
     {
-      label: 'Silicone',
-      value: 'silicone',
+      label: "Silicone",
+      value: "silicone",
       description: undefined,
       price: PRODUCT_PRICES.material.silicone,
     },
     {
-      label: 'Soft Polycarbonate',
-      value: 'polycarbonate',
-      description: 'Scratch-resistant coating',
+      label: "Soft Polycarbonate",
+      value: "polycarbonate",
+      description: "Scratch-resistant coating",
       price: PRODUCT_PRICES.material.polycarbonate,
     },
   ],
-} as const
+} as const;
 
 export const FINISHES = {
-  name: 'finish',
+  name: "finish",
   options: [
     {
-      label: 'Smooth Finish',
-      value: 'smooth',
+      label: "Smooth Finish",
+      value: "smooth",
       description: undefined,
       price: PRODUCT_PRICES.finish.smooth,
     },
     {
-      label: 'Textured Finish',
-      value: 'textured',
-      description: 'Soft grippy texture',
+      label: "Textured Finish",
+      value: "textured",
+      description: "Soft grippy texture",
       price: PRODUCT_PRICES.finish.textured,
     },
   ],
-} as const
+} as const;
