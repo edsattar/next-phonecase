@@ -15,6 +15,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import LoginModal from "@/components/LoginModal";
 import { Configuration } from "@/db/schema";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const router = useRouter();
@@ -39,7 +40,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   if (configuration.finish === "textured")
     totalPrice += PRODUCT_PRICES.finish.textured;
 
-  const { mutate: createPaymentSession } = useMutation({
+  const { mutate: createPaymentSession, isPending, isSuccess } = useMutation({
     mutationKey: ["get-checkout-session"],
     mutationFn: createCheckoutSession,
     onSuccess: ({ url }) => {
@@ -163,7 +164,22 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                 onClick={() => handleCheckout()}
                 className="px-4 sm:px-6 lg:px-8"
               >
-                Check out <ArrowRight className="h-4 w-4 ml-1.5 inline" />
+                {isPending ? (
+                  <>
+                    <ReloadIcon className="h-4 w-4 animate-spin mr-2" />
+                    Processing
+                  </>
+                ) : isSuccess ? (
+                  <>
+                    Done
+                    <Check className="h-4 w-4 ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Check out
+                    <ArrowRight className="h-4 w-4 ml-1.5 inline" />
+                  </>
+                )}
               </Button>
             </div>
           </div>
