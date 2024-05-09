@@ -19,28 +19,25 @@ import { Configuration } from "@/db/schema";
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const router = useRouter();
   const { toast } = useToast();
-  const { id } = configuration;
   const { user } = useKindeBrowserClient();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   useEffect(() => setShowConfetti(true), []);
 
-  const { color, model, finish, material } = configuration;
+  const tw = COLORS.find(
+    (supportedColor) => supportedColor.value === configuration.color,
+  )?.tw;
 
-  let modelLabel;
-
-  let tw;
-
-  useEffect(() => {
-    tw = COLORS.find((_color) => _color.value === color)?.tw;
-    modelLabel = MODELS.options.find((option) => option.value === model)?.label;
-  }, [model]);
+  const modelLabel = MODELS.options.find(
+    (option) => option.value === configuration.model,
+  )?.label;
 
   let totalPrice = BASE_PRICE;
-  if (material === "polycarbonate")
+  if (configuration.material === "polycarbonate")
     totalPrice += PRODUCT_PRICES.material.polycarbonate;
-  if (finish === "textured") totalPrice += PRODUCT_PRICES.finish.textured;
+  if (configuration.finish === "textured")
+    totalPrice += PRODUCT_PRICES.finish.textured;
 
   const { mutate: createPaymentSession } = useMutation({
     mutationKey: ["get-checkout-session"],
@@ -61,10 +58,10 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const handleCheckout = () => {
     if (user) {
       // create payment session
-      createPaymentSession({ configId: id });
+      createPaymentSession({ configId: configuration.id });
     } else {
       // need to log in
-      localStorage.setItem("configurationId", id);
+      localStorage.setItem("configurationId", configuration.id);
       setIsLoginModalOpen(true);
     }
   };
@@ -80,6 +77,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
           config={{ elementCount: 200, spread: 90 }}
         />
       </div>
+      {JSON.stringify(configuration)}
 
       <LoginModal isOpen={isLoginModalOpen} setIsOpen={setIsLoginModalOpen} />
 
@@ -131,7 +129,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                   </p>
                 </div>
 
-                {finish === "textured" ? (
+                {configuration.finish === "textured" ? (
                   <div className="flex items-center justify-between py-1 mt-2">
                     <p className="text-gray-600">Textured finish</p>
                     <p className="font-medium text-gray-900">
@@ -140,7 +138,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                   </div>
                 ) : null}
 
-                {material === "polycarbonate" ? (
+                {configuration.material === "polycarbonate" ? (
                   <div className="flex items-center justify-between py-1 mt-2">
                     <p className="text-gray-600">Soft polycarbonate material</p>
                     <p className="font-medium text-gray-900">
