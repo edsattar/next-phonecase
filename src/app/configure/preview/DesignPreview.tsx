@@ -28,13 +28,14 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
 
   const { color, model, finish, material } = configuration;
 
-  const tw = COLORS.find(
-    (supportedColor) => supportedColor.value === color,
-  )?.tw;
+  let modelLabel;
 
-  const modelLabel = MODELS.options.find(
-    (option) => option.value === model,
-  )?.label;
+  let tw;
+
+  useEffect(() => {
+    tw = COLORS.find((_color) => _color.value === color)?.tw;
+    modelLabel = MODELS.options.find((option) => option.value === model)?.label;
+  }, [model]);
 
   let totalPrice = BASE_PRICE;
   if (material === "polycarbonate")
