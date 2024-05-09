@@ -9,7 +9,6 @@ interface PageProps {
 }
 
 const Page = async ({ searchParams }: PageProps) => {
-  //TODO: Implement session validation
 
   const { id } = searchParams;
 
