@@ -28,13 +28,13 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
 
   const { color, model, finish, material } = configuration;
 
-  const tw = COLORS.find( (supportedColor) => supportedColor.value === color,)?.tw;
+  const tw = COLORS.find(
+    (supportedColor) => supportedColor.value === color,
+  )?.tw;
 
-  // const { label: modelLabel } = MODELS.options.find( ({ value }) => value === model,)!;
-
-  const modelLabel = MODELS.options.find( (option) => option.value === model)?.label;
-
-
+  const modelLabel = MODELS.options.find(
+    (option) => option.value === model,
+  )?.label;
 
   let totalPrice = BASE_PRICE;
   if (material === "polycarbonate")
@@ -79,6 +79,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
           config={{ elementCount: 200, spread: 90 }}
         />
       </div>
+      {JSON.stringify(configuration)}
 
       <LoginModal isOpen={isLoginModalOpen} setIsOpen={setIsLoginModalOpen} />
 
