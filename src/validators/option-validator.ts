@@ -16,6 +16,11 @@ export const COLORS = [
   },
   { label: "Rose", value: "rose", tw: "rose-950" },
 ] as const;
+export const COLORS2 = {
+  black: { label: "Black", tw: "zinc-900" },
+  blue: { label: "Blue", tw: "blue-950" },
+  rose: { label: "Rose", tw: "rose-950" },
+} as const;
 export const MODELS2 = {
   iphonex: { label: "iPhone X" },
   iphone11: { label: "iPhone 11" },
