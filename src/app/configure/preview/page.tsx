@@ -20,7 +20,7 @@ const Page = async ({ searchParams }: PageProps) => {
     where: (configurations, { eq }) => eq(configurations.id, id),
   });
 
-  if (!configuration) {
+  if (!configuration || !configuration.model || !configuration.color) {
     return notFound();
   }
 
