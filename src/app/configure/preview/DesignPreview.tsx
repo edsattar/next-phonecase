@@ -4,7 +4,7 @@ import { Phone } from "@/components/Phone";
 import { Button } from "@/components/ui/button";
 import { BASE_PRICE, PRODUCT_PRICES } from "@/config/products";
 import { cn, formatPrice } from "@/lib/utils";
-import { COLORS2, MODELS2 } from "@/validators/option-validator";
+import { COLORS, MODELS } from "@/validators/option-validator";
 import { useMutation } from "@tanstack/react-query";
 import { ArrowRight, Check } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -21,20 +21,18 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const router = useRouter();
   const { toast } = useToast();
   const { user } = useKindeBrowserClient();
-  const {color, model} = configuration;
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   useEffect(() => setShowConfetti(true), []);
 
-  const tw = COLORS2[color || "black"].tw;
-  // const tw = COLORS.find(
-  //   (supportedColor) => supportedColor.value === configuration.color,
-  // )?.tw;
+  const tw = COLORS.find(
+    (supportedColor) => supportedColor.value === configuration.color,
+  )?.tw;
 
-  // const modelLabel = MODELS.options.find(
-  //   (option) => option.value === configuration.model,
-  // )?.label;
+  const modelLabel = MODELS.options.find(
+    (option) => option.value === configuration.model,
+  )?.label;
 
   let totalPrice = BASE_PRICE;
   if (configuration.material === "polycarbonate")
@@ -42,11 +40,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   if (configuration.finish === "textured")
     totalPrice += PRODUCT_PRICES.finish.textured;
 
-  const {
-    mutate: createPaymentSession,
-    isPending,
-    isSuccess,
-  } = useMutation({
+  const { mutate: createPaymentSession, isPending, isSuccess } = useMutation({
     mutationKey: ["get-checkout-session"],
     mutationFn: createCheckoutSession,
     onSuccess: ({ url }) => {
@@ -96,11 +90,9 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
         </div>
 
         <div className="mt-6 sm:col-span-9 md:row-end-1">
-          {model && (
-            <h3 className="text-3xl font-bold tracking-tight text-gray-900">
-              Your {MODELS2[model].label} Case
-            </h3>
-          )}
+          <h3 className="text-3xl font-bold tracking-tight text-gray-900">
+            Your {modelLabel} Case
+          </h3>
           <div className="mt-3 flex items-center gap-1.5 text-base">
             <Check className="h-4 w-4 text-green-500" />
             In stock and ready to ship

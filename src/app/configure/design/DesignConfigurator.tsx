@@ -58,7 +58,6 @@ export const DesignConfigurator = ({
     mutationKey: ["save-config"],
     mutationFn: async (args: SaveConfigArgs) => {
       await Promise.all([saveConfiguration(), _saveConfig(args)]);
-      router.push(`/configure/preview?id=${configId}`);
     },
     onError: () => {
       toast({
@@ -66,6 +65,9 @@ export const DesignConfigurator = ({
         description: "There was an error on our end. Please try again.",
         variant: "destructive",
       });
+    },
+    onSuccess: () => {
+      router.push(`/configure/preview?id=${configId}`);
     },
   });
 
@@ -374,7 +376,7 @@ export const DesignConfigurator = ({
               <p className="font-medium whitespace-nowrap">
                 {formatPrice(
                   (BASE_PRICE + options.finish.price + options.material.price) /
-                    100,
+                  100,
                 )}
               </p>
               <Button

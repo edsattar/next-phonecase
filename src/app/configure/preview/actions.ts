@@ -2,6 +2,7 @@
 
 import { BASE_PRICE, PRODUCT_PRICES } from "@/config/products";
 import { db } from "@/db";
+
 import { orders } from "@/db/schema";
 import { stripe } from "@/lib/stripe";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -34,6 +35,7 @@ export const createCheckoutSession = async ({
     price += PRODUCT_PRICES.material.polycarbonate;
 
   let order = await db.query.orders.findFirst({
+    columns: { id: true },
     where: (orders, { and, eq }) =>
       and(
         eq(orders.userId, user.id),
@@ -44,11 +46,14 @@ export const createCheckoutSession = async ({
   console.debug(user.id, configuration.id);
 
   if (!order) {
-    [ order ] = await db.insert(orders).values({
-      userId: user.id,
-      configurationId: configuration.id,
-      amount: price / 100,
-    }).returning();
+    [order] = await db
+      .insert(orders)
+      .values({
+        userId: user.id,
+        configurationId: configuration.id,
+        amount: price / 100,
+      })
+      .returning({ id: orders.id });
   }
 
   const product = await stripe.products.create({
@@ -70,7 +75,9 @@ export const createCheckoutSession = async ({
       orderId: order.id,
     },
     payment_method_types: ["card"],
-    shipping_address_collection: { allowed_countries: ["BD", "IN", "DE", "US", "AU", "CA"] },
+    shipping_address_collection: {
+      allowed_countries: ["BD", "IN", "DE", "US", "AU", "CA"],
+    },
     success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
   });
 
